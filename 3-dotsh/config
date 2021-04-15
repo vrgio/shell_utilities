@@ -1,0 +1,2 @@
+DOT_REPO="https://github.com/vrgio/.dot.git"
+DOTDIR="${HOME}/.dot"

@@ -1,0 +1,4 @@
+NOTEDIR=/tmp/mynotes
+FILETYPE="txt"
+my_editor=vim
+my_pager=most

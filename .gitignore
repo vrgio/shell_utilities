@@ -1,0 +1,6 @@
+# bkup
+*.swp
+*.orig
+
+# xtra dir
+xtra/

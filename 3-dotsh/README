@@ -1,0 +1,9 @@
+dot.sh
+==========
+
+Dotfiles management following the bare git repo method:
+https://www.atlassian.com/git/tutorials/dotfiles
+
+Optionally takes a backup of existing hidden files in the home dir
+
+`config` file to change the address of the remote repo or the name of the bare repo
