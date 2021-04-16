@@ -52,7 +52,7 @@ bkupolddot() {
 }
 
 dot() {
-  /usr/bin/git --git-dir="$DOTDIR" --work-tree="$HOME" $@
+  /usr/bin/git --git-dir="$DOTDIR" --work-tree="$HOME" "$@"
 }
 
 # gitignore
