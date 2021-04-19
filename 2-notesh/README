@@ -6,9 +6,9 @@ Note managing script. Uses $EDITOR, $PAGER and standard linux utilities
 Default notes directory is "$HOME"/.notes}. Default values can change in config file (needs to be in the same directory as the script - see example config file)
 
 Usage:
--- add <filename> (adds new note. If filename is empty, generate a filename)
--- view filename (view contents of a note)
--- edit filename (edit note)
--- del filename (move note to NOTEDIR/.trash)
--- emptytrash (empty NOTEDIR/.trash)
--- backup (create a backup of all notes)
+-a|--add <filename> (adds new note. If filename is empty, generate a filename)
+-v|--view  filename (view contents of a note)
+-e|--edit filename (edit note)
+-d|--del filename (move note to NOTEDIR/.trash)
+-c|--cleartrash (empty NOTEDIR/.trash)
+-b|--backup (create a backup of all notes)

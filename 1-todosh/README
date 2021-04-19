@@ -6,12 +6,11 @@ Simple todo list shell script. Uses grep and sed. No dates, no priorities, no fe
 Default file is "$HOME/.todo"
 
 Usage:
--- add "<text>" (adds new item in list)
--- del <line_number> (removes item from list)
--- flag <line_number> <u|d> (flags item in specific line number
-with "URGENT" or "DONE")
--- urgent (display items flagged as "URGENT")
--- done (display items flagged as "DONE")
--- cleardone (remove all items flagged as "DONE")
--- empty (delete list contents)
-
+-a|--add "<text>" (adds new item in list)
+-r|--del <line_number> (removes item from list)
+-f|--flag <line_number> <u|d> (flags item in specific line number
+    with "URGENT" or "DONE")
+-u|--urgent (display items flagged as "URGENT")
+-d|--done (display items flagged as "DONE")
+-c|--cleardone (remove all items flagged as "DONE")
+-e|--empty (delete todolist contents)

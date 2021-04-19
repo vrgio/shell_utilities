@@ -9,14 +9,14 @@ usage() {
   cat << EOF
 Usage: ./todo.sh [options] <text|line_number> <u|d>
 
-options:    -- add "<text>" (adds new item in list)
-            -- del <line_number> (removes item from list)
-            -- flag <line_number> <u|d> (flags item in specific line number
+options:    -a|--add "<text>" (adds new item in list)
+            -r|--del <line_number> (removes item from list)
+            -f|--flag <line_number> <u|d> (flags item in specific line number
                     with "URGENT" or "DONE")
-            -- urgent (display items flagged as "URGENT")
-            -- done (display items flagged as "DONE")
-            -- cleardone (remove all items flagged as "DONE")
-            -- empty (delete todolist contents)
+            -u|--urgent (display items flagged as "URGENT")
+            -d|--done (display items flagged as "DONE")
+            -c|--cleardone (remove all items flagged as "DONE")
+            -e|--empty (delete todolist contents)
 EOF
 }
 
@@ -28,13 +28,13 @@ if [ $# -eq 0 ]; then
 fi
 
 case "$1" in
-  add)
+  -a|--add)
     echo "$2" >> "$TODO"
     ;;
-  del)
+  -r|--del)
     sed -i "${2}d" "$TODO"
     ;;
-  flag)
+  -f|--flag)
     if [ "$#" -ne 3 ]; then
       usage
       exit 1
@@ -47,16 +47,16 @@ case "$1" in
       usage
     fi
     ;;
-  urgent)
+  -u|--urgent)
     grep URGENT "$TODO"
     ;;
-  done)
+  -d|--done)
     grep DONE "$TODO"
     ;;
-  cleardone)
+  -c|--cleardone)
     sed -i "/DONE$/d" "$TODO"
     ;;
-  empty)
+  -e|--empty)
     : > "$TODO"
     ;;
   *)

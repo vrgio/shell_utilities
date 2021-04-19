@@ -39,13 +39,13 @@ usage() {
   cat << EOF
 Usage: ./note.sh [options] <filename>
 
-options:    -- add <filename> (adds new note. If filename is empty, generate
+options:    -a|--add <filename> (adds new note. If filename is empty, generate
                     a filename)
-            -- view filename (view contents of a note)
-            -- edit filename (edit note)
-            -- del filename (move note to NOTEDIR/.trash)
-            -- emptytrash (empty NOTEDIR/.trash)
-            -- backup (create a backup of all notes)
+            -v|--view filename (view contents of a note)
+            -e|--edit filename (edit note)
+            -d|--del filename (move note to NOTEDIR/.trash)
+            -c|--cleartrash (empty NOTEDIR/.trash)
+            -b|--backup (create a backup of all notes)
 EOF
 }
 
@@ -69,7 +69,7 @@ if [ $# -eq 0 ]; then
 fi
 
 case "$1" in
-  add)
+  -a|--add)
     if [ $# -eq 2 ]; then
       note_name="${2}.${FILETYPE}"
     else
@@ -78,13 +78,13 @@ case "$1" in
     touch "${NOTEDIR}/${note_name}"
     "$my_editor" "${NOTEDIR}/${note_name}"
     ;;
-  view)
+  -v|--view)
     "$my_pager" "${NOTEDIR}/${2}"
     ;;
-  edit)
+  -e|--edit)
     "$my_editor" "${NOTEDIR}/${2}"
     ;;
-  del)
+  -d|--del)
     if [ -f "${NOTEDIR}/${2}" ]; then
       mv "${NOTEDIR}/${2}" "${TRASH}/"
     elif [ -d "${NOTEDIR}/${2}" ]; then
@@ -93,10 +93,10 @@ case "$1" in
       echo "$2 does not exist"
     fi
     ;;
-  emptytrash)
+  -c|--cleartrash)
     rm -r "${TRASH:?}/"
     ;;
-  backup)
+  -b|--backup)
     tar -zcvf "/tmp/${now_date}-notes_bk.tar.gz" "${NOTEDIR}"
     printf "File %s created at /tmp\n" "${now_date}-notes_bk.tar.gz"
     ;;
