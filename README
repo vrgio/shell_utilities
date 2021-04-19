@@ -1,0 +1,5 @@
+Small shell scripts for various tasks.
+
+- todosh: Simple todo list shell script. Uses grep and sed. No dates, no priorities, no features.
+- notesh: Note managing script. Uses $EDITOR, $PAGER and standard linux utilities.
+- dotsh: Dotfiles management following the bare git repo method.

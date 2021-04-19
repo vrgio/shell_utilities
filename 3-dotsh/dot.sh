@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #set -x
 
 DOT_REPO="https://github.com/vrgio/.dot.git"
