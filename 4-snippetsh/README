@@ -1,0 +1,13 @@
+snippets.sh
+==========
+
+Small script to manage snippets. Uses standard linux utilities.
+
+Default file is "${HOME}/.snippets"
+
+Usage:
+-a|--add (adds new snippet)
+-v|--view (view all existing snippets)
+-s|--search [PATTERN] (search snippet with [PATTERN])
+-d|--del [LINE NUMBER] (delete a snippet)
+-e|--empty (delete all contents)
