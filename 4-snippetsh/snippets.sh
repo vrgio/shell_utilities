@@ -26,7 +26,7 @@ EOF
 
 if [ $# -eq 0 ]; then
   if [ -s "$SNIPFILE" ]; then
-    nl < "${SNIPFILE%%|*}"
+    nl < "${SNIPFILE}"
   else
     echo "File $SNIPFILE empty"
   fi
