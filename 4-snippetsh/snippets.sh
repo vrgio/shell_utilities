@@ -25,13 +25,17 @@ EOF
 #trap read debug
 
 if [ $# -eq 0 ]; then
-  if [ -s "$SNIPFILE" ]; then
-    nl < "${SNIPFILE}"
-  else
-    echo "File $SNIPFILE empty"
-  fi
-  exit 0
+  usage
+  exit 1
 fi
+
+# line numbers must be positive ints
+is_valid() {
+  case $1 in
+    ''|*[!0-9]*|*[!1-9]*) return 1 ;;
+    *) return 0 ;;
+  esac
+}
 
 # colourful output
 out() {
@@ -47,18 +51,35 @@ case "$1" in
     printf "${BLUE}Description${NC}: \n"
     read -r descr
     echo "$2 | ${descr}" >> "$SNIPFILE"
+    exit 0
     ;;
   -v|--view)
-    out < "$SNIPFILE"
+    if [ -s "$SNIPFILE" ]; then
+      out < "$SNIPFILE"
+      exit 0
+    else
+      echo "File $SNIPFILE empty"
+      exit 0
+    fi
     ;;
   -s|--search)
+    if [ -z "$2" ]; then
+      echo "Error: No search string"
+      exit 1
+    fi
     : > "$TMPFILE"
     grep -n -e "${2}" "$SNIPFILE" > "$TMPFILE"
     out < "$TMPFILE"
-    rm $TMPFILE
+    rm "$TMPFILE"
+    exit 0
     ;;
   -d|--del)
+    if ! is_valid "${2}"; then
+      echo "Invalid line number: $2"
+      exit 1
+    fi
     sed -i "${2}d" "$SNIPFILE"
+    exit 0
     ;;
   -e|--empty)
     echo "Deleting all snippets, are you sure? [y]es/[n]o"
@@ -68,10 +89,13 @@ case "$1" in
         : > "$SNIPFILE"
         ;;
       (*)
-      exit 0
+        echo "Invalid option: $1"
+        exit 1
+    exit 0
   esac
     ;;
   *)
     usage
+    exit 1
     ;;
 esac
