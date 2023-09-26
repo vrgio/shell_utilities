@@ -40,8 +40,8 @@ is_valid() {
 # colourful output
 out() {
   while IFS= read -r line; do
-    echo "${line%%|*}"
-    printf "${BLUE}Description${NC}: ${line#*|}\n"
+    echo "${line%%||*}"
+    printf "${BLUE}Description${NC}: ${line#*||}\n"
     printf "${RED}----------------${NC}\n"
   done
 }
