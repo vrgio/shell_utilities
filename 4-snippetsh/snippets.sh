@@ -50,7 +50,7 @@ case "$1" in
   -a|--add)
     printf "${BLUE}Description${NC}: \n"
     read -r descr
-    echo "$2 | ${descr}" >> "$SNIPFILE"
+    echo "$2 || ${descr}" >> "$SNIPFILE"
     exit 0
     ;;
   -v|--view)
