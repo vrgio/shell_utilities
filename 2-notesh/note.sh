@@ -50,9 +50,6 @@ options:    -a|--add [filename] (adds new note. If filename is empty, generate
 EOF
 }
 
-#set -x
-#trap read debug
-
 # count files in notedir
 count_f() {
   n=0
