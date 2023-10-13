@@ -15,3 +15,10 @@ sh note.sh (lists all existing notes)
   -b|--backup (create a backup of all notes)
   -h|--help (print help message)
 
+Example:
+
+sh note.sh # lists notes in format: 1 - mynote.md | 2 - mynote2.md | etc
+sh note.sh -a mynote # adds file ~/.notes/mynote.md
+sh note.sh -v mynote # opens file ~/.notes/mynote.md in pager
+sh note.sh -e 4 # opens file n. 4 in dir in editor
+
