@@ -1,5 +1,5 @@
 #!/bin/sh
-#set -x
+set -e
 
 NOTEDIR="${HOME}/.notes"
 TRASHDIR=".trash"
@@ -16,7 +16,7 @@ fi
 if [ -n "${PAGER+x}" ]; then
   my_pager="$PAGER";
 else
-  my_pager="$(command -v less || command -v more || command -v most || command -v pg || command -v nano --view)"
+  my_pager="$(command -v less || command -v more || command -v most || command -v bat || command -v pg || command -v nano --view)"
 fi
 
 # find date
@@ -37,17 +37,21 @@ TRASH="${NOTEDIR}/${TRASHDIR}"
 
 usage() {
   cat << EOF
-Usage: ./note.sh [options] <filename>
+Usage: ./note.sh [options] <filename|file number>
 
-options:    -a|--add <filename> (adds new note. If filename is empty, generate
+options:    -a|--add [filename] (adds new note. If filename is empty, generate
                     a filename)
-            -v|--view filename (view contents of a note)
-            -e|--edit filename (edit note)
-            -d|--del filename (move note to NOTEDIR/.trash)
-            -c|--cleartrash (empty NOTEDIR/.trash)
+            -v|--view <filename|file number> (view contents of a note)
+            -e|--edit <filename|file number> (edit note)
+            -d|--del <filename|file number> (move note to $NOTEDIR/.trash)
+            -c|--cleartrash (empty $NOTEDIR/.trash)
             -b|--backup (create a backup of all notes)
+            -h|--help (print this help message)
 EOF
 }
+
+#set -x
+#trap read debug
 
 # count files in notedir
 count_f() {
@@ -57,16 +61,43 @@ count_f() {
   done
 }
 
-if [ $# -eq 0 ]; then
-  count_f
-  printf "NOTEDIR is %s. There are %s notes:\n" "$NOTEDIR" "$n"
+count_f
+n_files="$n"
+
+# enumerated file list
+enum_f() {
+  printf "NOTEDIR is %s. There are %s notes\n" "$NOTEDIR" "$n_files"
+  i=1
   for f in "$NOTEDIR"/*; do
-    if [ "$n" -ne 0 ]; then
-      echo "- $(basename "$f")"
+    if test -e "$f" || test -L "$f"; then
+      echo "${i} - $(basename "$f")"
+      i=$((i+1))
     fi
   done
-  exit 0
+}
+
+if [ $# -eq 0 ]; then
+  enum_f
 fi
+
+if [ "$2" -eq "$2" ]  2>/dev/null; then
+  myfile=$(eval "ls -1 \"\$NOTEDIR\" | grep -E '^\S' | sed -n ${2}p")
+else
+  myfile="$2"
+fi
+
+show_or_edit() {
+  note_path="${NOTEDIR}/${myfile}"
+  if [ -f "$note_path" ]; then
+    if [ "$edit_mode" -eq 1 ]; then
+      "$my_editor" "$note_path"
+    else
+      "$my_pager" "$note_path"
+    fi
+  else
+    echo "File $myfile does not exist."
+  fi
+}
 
 case "$1" in
   -a|--add)
@@ -79,15 +110,17 @@ case "$1" in
     "$my_editor" "${NOTEDIR}/${note_name}"
     ;;
   -v|--view)
-    "$my_pager" "${NOTEDIR}/${2}"
+    edit_mode=0
+    show_or_edit
     ;;
   -e|--edit)
-    "$my_editor" "${NOTEDIR}/${2}"
+    edit_mode=1
+    show_or_edit
     ;;
   -d|--del)
-    if [ -f "${NOTEDIR}/${2}" ]; then
-      mv "${NOTEDIR}/${2}" "${TRASH}/"
-    elif [ -d "${NOTEDIR}/${2}" ]; then
+    if [ -f "${NOTEDIR}/${myfile}" ]; then
+      mv "${NOTEDIR}/${myfile}" "${TRASH}/"
+    elif [ -d "${NOTEDIR}/${myfile}" ]; then
       echo "$2 is a directory"
     else
       echo "$2 does not exist"
@@ -100,7 +133,7 @@ case "$1" in
     tar -zcvf "/tmp/${now_date}-notes_bk.tar.gz" "${NOTEDIR}"
     printf "File %s created at /tmp\n" "${now_date}-notes_bk.tar.gz"
     ;;
-  *)
+  -h|--help)
     usage
     ;;
 esac
